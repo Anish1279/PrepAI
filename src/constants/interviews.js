@@ -1,0 +1,4 @@
+export const TECHNICAL_QUESTION_COUNT = 5;
+export const CODING_ASSESSMENT_MINUTES = 20;
+export const MAX_JOB_EXPERIENCE_YEARS = 50;
+export const MIN_ANSWER_LENGTH = 10;
