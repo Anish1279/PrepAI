@@ -6,6 +6,8 @@ import {
 } from '@/features/coding/services/coding-interview-service';
 import { createCodingInterviewSchema } from '@/features/coding/utils/validation';
 
+export const maxDuration = 10;
+
 export async function GET() {
   try {
     const email = await requireCurrentUserEmail();

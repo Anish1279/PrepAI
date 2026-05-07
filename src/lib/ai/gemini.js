@@ -7,7 +7,7 @@ import { AppError } from '@/lib/errors';
 
 const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const MAX_OUTPUT_TOKENS = 8192;
-const AI_TIMEOUT_MS = 15000;
+const AI_TIMEOUT_MS = 8500;
 const AI_TIMEOUT_MESSAGE = 'AI is taking too long — please try again';
 const MAX_ATTEMPTS_PER_MODEL = 2;
 const RETRYABLE_STATUSES = new Set([429, 500, 502, 503, 504]);
@@ -44,8 +44,14 @@ function getGeminiClient() {
 export async function generateText(prompt) {
   const result = await withAiTimeout(() =>
     runWithModelFallback(async (model) => {
-      const chat = model.startChat({ generationConfig, safetySettings });
-      return chat.sendMessage(prompt);
+      return model.generateContent({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          ...generationConfig,
+          responseMimeType: 'application/json',
+        },
+        safetySettings,
+      });
     })
   );
 
